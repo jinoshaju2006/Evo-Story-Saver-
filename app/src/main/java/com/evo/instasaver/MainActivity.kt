@@ -30,9 +30,10 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.Executors
 
-private val Night = Color(0xFF090912)
-private val Panel = Color(0xFF191827)
-private val Violet = Color(0xFF9B6BFF)
+private val Night = Color(0xFF07070D)
+private val Panel = Color(0x24FFFFFF)
+private val Violet = Color(0xFFFF2848)
+private val GlassBorder = Color(0x55FFFFFF)
 private val worker = Executors.newSingleThreadExecutor()
 private val mainHandler = Handler(Looper.getMainLooper())
 
@@ -59,21 +60,32 @@ private fun SaverHome(shared: String) {
 
     Column(
         Modifier.fillMaxSize()
-            .background(Brush.verticalGradient(listOf(Color(0xFF21133B), Night)))
+            .background(Brush.verticalGradient(listOf(Color(0xFF291023), Color(0xFF11101D), Night)))
             .padding(22.dp),
         horizontalAlignment = Alignment.Start
     ) {
         Spacer(Modifier.height(22.dp))
-        Text("EVO", color = Violet, fontSize = 17.sp, fontWeight = FontWeight.Black, letterSpacing = 5.sp)
-        Text("INSTA SAVER", color = Color.White, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold)
-        Text("Save public media you have permission to keep.", color = Color.LightGray, fontSize = 13.sp)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                Modifier.size(54.dp).background(Color(0x26FFFFFF), RoundedCornerShape(16.dp))
+                    .padding(5.dp),
+                contentAlignment = Alignment.Center
+            ) { Text("EVO", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Black, letterSpacing = 1.sp) }
+            Spacer(Modifier.width(12.dp))
+            Column {
+                Text("EVO", color = Violet, fontSize = 12.sp, fontWeight = FontWeight.Black, letterSpacing = 4.sp)
+                Text("INSTA SAVER", color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
+            }
+        }
+        Text("FROSTED • FAST • PRIVATE KEY STORAGE", color = Color(0xFFBDB7C8), fontSize = 10.sp, letterSpacing = 1.sp)
         Spacer(Modifier.height(22.dp))
         Text("GETINSAVER API KEY", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp)
         Spacer(Modifier.height(8.dp))
         BasicTextField(
             value = apiKey,
             onValueChange = { apiKey = it; prefs.edit().putString("gis_key", it.trim()).apply() },
-            modifier = Modifier.fillMaxWidth().background(Panel, RoundedCornerShape(14.dp)).padding(15.dp),
+            modifier = Modifier.fillMaxWidth().background(Panel, RoundedCornerShape(14.dp))
+                .padding(15.dp),
             textStyle = TextStyle(color = Color.White, fontSize = 14.sp),
             visualTransformation = PasswordVisualTransformation(),
             decorationBox = { inner -> Box { if (apiKey.isEmpty()) Text("gis_live_…", color = Color.Gray); inner() } }
@@ -84,7 +96,8 @@ private fun SaverHome(shared: String) {
         BasicTextField(
             value = link,
             onValueChange = { link = it; items = emptyList() },
-            modifier = Modifier.fillMaxWidth().background(Panel, RoundedCornerShape(14.dp)).padding(15.dp).heightIn(min = 74.dp),
+            modifier = Modifier.fillMaxWidth().background(Panel, RoundedCornerShape(14.dp))
+                .padding(15.dp).heightIn(min = 74.dp),
             textStyle = TextStyle(color = Color.White, fontSize = 14.sp),
             decorationBox = { inner -> Box { if (link.isEmpty()) Text("Paste a public post, Reel or Story URL…", color = Color.Gray); inner() } }
         )
@@ -156,7 +169,7 @@ private fun SaverHome(shared: String) {
                 }
             },
             modifier = Modifier.fillMaxWidth().height(52.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Violet),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE91E42)),
             shape = RoundedCornerShape(14.dp)
         ) { Text(if (loading) "PLEASE WAIT…" else "FIND MEDIA", fontWeight = FontWeight.Bold) }
 
@@ -167,7 +180,7 @@ private fun SaverHome(shared: String) {
             Button(
                 onClick = { downloadMedia(context, item, index) { message = it } },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = Panel)
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0x553A3448))
             ) { Text("DOWNLOAD ${item.type.uppercase()} ${index + 1}", color = Color.White) }
         }
         Spacer(Modifier.weight(1f))
