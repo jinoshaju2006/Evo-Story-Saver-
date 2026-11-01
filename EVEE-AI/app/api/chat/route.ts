@@ -44,8 +44,8 @@ async function streamGemini(messages: ChatMessage[]) {
     parts: [{ text: m.content }]
   }));
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:streamGenerateContent?alt=sse&key=${encodeURIComponent(key)}`,
-    { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ contents }), signal: AbortSignal.timeout(90000) }
+    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:streamGenerateContent?alt=sse`,
+    { method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": key }, body: JSON.stringify({ contents }), signal: AbortSignal.timeout(90000) }
   );
   if (!response.ok) throw new Error(`Gemini error (${response.status}): ${(await response.text()).slice(0, 500)}`);
   return parseSSE(response, data => {
